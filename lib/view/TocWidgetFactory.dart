@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:markdownwidget/view/MdWidgetFactory.dart';
 import 'package:markdownwidget/view/MultiMdWidgetFactory.dart';
 import 'package:markdown/markdown.dart' as mdparser;
 
-class TocWidgetFactory implements MultiMdWidgetFactory {
+class TocWidgetFactory implements MdWidgetFactory {
 
-  @override
   List<Widget> widgetList;
 
   TocWidgetFactory(this.widgetList) {
@@ -52,7 +52,7 @@ class TocWidgetFactory implements MultiMdWidgetFactory {
   }
 
   @override
-  void createMdWidgets(mdparser.Node node) {
-    widgetList.add(_generateTocWidget(node));
+  Widget createMdWidget(mdparser.Node node) {
+    return _generateTocWidget(node);
   }
 }
