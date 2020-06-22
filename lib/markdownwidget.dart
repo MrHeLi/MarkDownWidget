@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:markdownwidget/tags.dart';
 import 'package:markdownwidget/view/CircleWidget.dart';
 import 'package:markdownwidget/view/RectangleWidget.dart';
+import 'package:markdownwidget/view/TocWidgetFactory.dart';
 import 'package:markdownwidget/view/framework_view.dart';
 import 'package:markdown/markdown.dart' as mdparser;
 
@@ -100,25 +101,6 @@ class MarkdownWidget {
     _contents.add(widget);
   }
 
-  void _initTocTitle(String name) {
-    Widget widget = Container(
-      alignment: Alignment.centerLeft,
-      decoration: BoxDecoration(
-//        color: Colors.blueGrey,
-        border: Border.fromBorderSide(BorderSide(color: Colors.white)),
-      ),
-      child: Text(
-        name,
-        style: TextStyle(
-//          color: Color(0xff4A4A4A),
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-    _tocs.add(widget);
-  }
-
   void _generateContentP(String tag, mdparser.Node node) {
     mdparser.Element element = node as mdparser.Element;
     Text text;
@@ -180,28 +162,40 @@ class MarkdownWidget {
       final List<String> lines = data.split(RegExp(r'\r?\n'));
 
       List<mdparser.Node> nodes = document.parseLines(lines);
-      _initTocTitle("目录");
+      TocWidgetFactory tocFactory = TocWidgetFactory(_tocs);
       for (mdparser.Node node in nodes) {
         String tag = (node as mdparser.Element).tag.toString();
         print("tag: " + tag);
         switch (tag) {
           case h1:
-            _generateTocWidget(tag, node);
+            tocFactory.createMdWidgets(node);
+            _generateHeadWidget(tag, node);
+//            _generateTocWidget(tag, node);
             break;
           case h2:
-            _generateTocWidget(tag, node);
+//            _generateTocWidget(tag, node);
+            tocFactory.createMdWidgets(node);
+            _generateHeadWidget(tag, node);
             break;
           case h3:
-            _generateTocWidget(tag, node);
+            tocFactory.createMdWidgets(node);
+            _generateHeadWidget(tag, node);
+//            _generateTocWidget(tag, node);
             break;
           case h4:
-            _generateTocWidget(tag, node);
+//            _generateTocWidget(tag, node);
+            tocFactory.createMdWidgets(node);
+            _generateHeadWidget(tag, node);
             break;
           case h5:
-            _generateTocWidget(tag, node);
+            tocFactory.createMdWidgets(node);
+            _generateHeadWidget(tag, node);
+//            _generateTocWidget(tag, node);
             break;
           case h6:
-            _generateTocWidget(tag, node);
+            tocFactory.createMdWidgets(node);
+            _generateHeadWidget(tag, node);
+//            _generateTocWidget(tag, node);
             break;
           case p:
             _generateContentP(tag, node);
